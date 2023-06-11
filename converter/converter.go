@@ -298,17 +298,15 @@ func addQRCodeToPdf(outputPath string, opt *Options) error {
 	for {
 		pageno++
 		// add qrcode
-		positions := []PosQr{a.TopLeft, a.TopRight, a.BottomLeft, a.BottomRight, *a.CustomPos}
+		positions := []PosQr{a.TopLeft, a.TopRight, a.BottomLeft, a.BottomRight}
+		if a.CustomPos != nil {
+			positions = append(positions, *a.CustomPos)
+		}
 		for _, pos := range positions {
 			err := pdf.Image(pos.NameQr, float64(pos.X), float64(pos.Y), nil)
 			if err != nil {
 				return err
 			}
-			
-			//err = os.Remove(pos.NameQr)
-			//if err != nil {
-			//	return err
-			//}
 			
 			// Calculate the center position
 			imageWidth := 15.0
@@ -416,7 +414,6 @@ func copyPdfContent(srcPath, dstPath string) error {
 
 func importPdfPage(pdf *gopdf.GoPdf, filename string, pageno int, box string) (tpl int, err error) {
 	defer func() {
-		// recover from panic if one occured. Set err to nil otherwise.
 		if recover() != nil {
 			err = errors.New("array index out of bounds")
 		}
@@ -433,7 +430,6 @@ func deleteFilesInFolder(folderPath string) error {
 		return err
 	}
 	
-	// Hapus semua file dalam folder
 	for _, file := range files {
 		err := os.RemoveAll(filepath.Join(folderPath, file.Name()))
 		if err != nil {
@@ -546,7 +542,10 @@ func processPasswordProtectedPdf(filePath string, opt *Options, outputPath strin
 			return err
 		}
 		
-		positions := []PosQr{a.TopLeft, a.TopRight, a.BottomLeft, a.BottomRight, *a.CustomPos}
+		positions := []PosQr{a.TopLeft, a.TopRight, a.BottomLeft, a.BottomRight}
+		if a.CustomPos != nil {
+			positions = append(positions, *a.CustomPos)
+		}
 		for _, pos := range positions {
 			// Prepare the image.
 			img, err := c.NewImageFromFile(pos.NameQr)
