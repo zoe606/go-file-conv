@@ -30,8 +30,8 @@ const (
 	rightCorner     = 520
 	bottomCorner    = 770
 	apiKey          = "f5ea7467200af934b07f052b0b51732e795a463df986dc2f6fd9d3d9df36bb0c"
-	privyImg        = "privy.png"
-	privyResizedImg = "privy_resized.png"
+	privyImg        = "assets/privy.png"
+	privyResizedImg = "assets/privy_resized.png"
 )
 
 type PosQr struct {
