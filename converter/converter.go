@@ -21,6 +21,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -348,8 +349,21 @@ func addQRCodeToPdf(outputPath string, opt *Options) error {
 }
 
 func resizeImage(inputPath, outputPath string, width, height uint) error {
+	// Get the path of the currently executing file
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		return fmt.Errorf("failed to get the path of the currently executing file")
+	}
+	
+	// Resolve the directory path of the currently executing file
+	dir := filepath.Dir(filename)
+	
+	// Construct the absolute input and output paths
+	absInputPath := filepath.Join(dir, inputPath)
+	//absOutputPath := filepath.Join(dir, outputPath)
+	
 	// Open the image file
-	file, err := os.Open(inputPath)
+	file, err := os.Open(absInputPath)
 	if err != nil {
 		return err
 	}
