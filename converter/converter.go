@@ -51,19 +51,20 @@ type Stamp struct {
 type Option func(*Options)
 
 type Options struct {
-	X           *float64
-	Y           *float64
-	PDFPassword *string
+	X           float64
+	Y           float64
+	PDFPassword string
 }
 
 func NewProcessFiles(inputPath string, options ...Option) error {
 	// Membuat variabel default untuk opsi
-	opt := &Options{
-		X:           nil,
-		Y:           nil,
-		PDFPassword: nil,
-	}
-	
+	opt := &Options{}
+	//opt := &Options{
+	//	X:           nil,
+	//	Y:           nil,
+	//	PDFPassword: nil,
+	//}
+	//
 	// Menjalankan opsi-opsi yang diberikan
 	for _, optFunc := range options {
 		optFunc(opt)
@@ -139,19 +140,19 @@ func NewProcessFiles(inputPath string, options ...Option) error {
 
 func WithX(x float64) Option {
 	return func(opt *Options) {
-		opt.X = &x
+		opt.X = x
 	}
 }
 
 func WithY(y float64) Option {
 	return func(opt *Options) {
-		opt.Y = &y
+		opt.Y = y
 	}
 }
 
 func WithPDFPassword(password string) Option {
 	return func(opt *Options) {
-		opt.PDFPassword = &password
+		opt.PDFPassword = password
 	}
 }
 
@@ -277,10 +278,10 @@ func addQRCodeToPdf(outputPath string, opt *Options) error {
 		},
 	}
 	
-	if opt.X != nil && opt.Y != nil {
+	if opt.X != 0 && opt.Y != 0 {
 		a.CustomPos = &PosQr{
-			X:      *opt.X,
-			Y:      *opt.Y,
+			X:      opt.X,
+			Y:      opt.Y,
 			NameQr: generateQR(),
 		}
 		
@@ -482,7 +483,7 @@ func processPasswordProtectedPdf(filePath string, opt *Options, outputPath strin
 	}
 	
 	if encrypted {
-		_, err := pdfReader.Decrypt([]byte(*opt.PDFPassword))
+		_, err := pdfReader.Decrypt([]byte(opt.PDFPassword))
 		if err != nil {
 			return err
 		}
@@ -522,10 +523,10 @@ func processPasswordProtectedPdf(filePath string, opt *Options, outputPath strin
 		},
 	}
 	
-	if opt.X != nil && opt.Y != nil {
+	if opt.X != 0 && opt.Y != 0 {
 		a.CustomPos = &PosQr{
-			X:      *opt.X,
-			Y:      *opt.Y,
+			X:      opt.X,
+			Y:      opt.Y,
 			NameQr: generateQR(),
 		}
 		
@@ -647,8 +648,8 @@ func processPasswordProtectedPdf(filePath string, opt *Options, outputPath strin
 	})
 	
 	c.SetPdfWriterAccessFunc(func(w *model.PdfWriter) error {
-		userPass := []byte(*opt.PDFPassword)
-		ownerPass := []byte(*opt.PDFPassword)
+		userPass := []byte(opt.PDFPassword)
+		ownerPass := []byte(opt.PDFPassword)
 		err := w.Encrypt(userPass, ownerPass, nil)
 		if err != nil {
 			return err
