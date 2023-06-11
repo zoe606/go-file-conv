@@ -21,7 +21,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"time"
 )
@@ -31,8 +30,8 @@ const (
 	rightCorner     = 520
 	bottomCorner    = 770
 	apiKey          = "f5ea7467200af934b07f052b0b51732e795a463df986dc2f6fd9d3d9df36bb0c"
-	privyImg        = "assets/privy.png"
-	privyResizedImg = "assets/privy_resized.png"
+	privyImg        = "qr_bg.png"
+	privyResizedImg = "qr_bg_resized.png"
 )
 
 type PosQr struct {
@@ -349,21 +348,21 @@ func addQRCodeToPdf(outputPath string, opt *Options) error {
 }
 
 func resizeImage(inputPath, outputPath string, width, height uint) error {
-	// Get the path of the currently executing file
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		return fmt.Errorf("failed to get the path of the currently executing file")
-	}
-	
-	// Resolve the directory path of the currently executing file
-	dir := filepath.Dir(filename)
-	
-	// Construct the absolute input and output paths
-	absInputPath := filepath.Join(dir, inputPath)
-	absOutputPath := filepath.Join(dir, outputPath)
+	//// Get the path of the currently executing file
+	//_, filename, _, ok := runtime.Caller(0)
+	//if !ok {
+	//	return fmt.Errorf("failed to get the path of the currently executing file")
+	//}
+	//
+	//// Resolve the directory path of the currently executing file
+	//dir := filepath.Dir(filename)
+	//
+	//// Construct the absolute input and output paths
+	//absInputPath := filepath.Join(dir, inputPath)
+	//absOutputPath := filepath.Join(dir, outputPath)
 	
 	// Open the image file
-	file, err := os.Open(absInputPath)
+	file, err := os.Open(inputPath)
 	if err != nil {
 		return err
 	}
@@ -379,7 +378,7 @@ func resizeImage(inputPath, outputPath string, width, height uint) error {
 	resizedImg := resize.Resize(width, height, img, resize.Lanczos3)
 	
 	// Create the output file
-	outFile, err := os.Create(absOutputPath)
+	outFile, err := os.Create(outputPath)
 	if err != nil {
 		return err
 	}
