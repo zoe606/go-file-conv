@@ -360,7 +360,7 @@ func resizeImage(inputPath, outputPath string, width, height uint) error {
 	
 	// Construct the absolute input and output paths
 	absInputPath := filepath.Join(dir, inputPath)
-	//absOutputPath := filepath.Join(dir, outputPath)
+	absOutputPath := filepath.Join(dir, outputPath)
 	
 	// Open the image file
 	file, err := os.Open(absInputPath)
@@ -379,7 +379,7 @@ func resizeImage(inputPath, outputPath string, width, height uint) error {
 	resizedImg := resize.Resize(width, height, img, resize.Lanczos3)
 	
 	// Create the output file
-	outFile, err := os.Create(outputPath)
+	outFile, err := os.Create(absOutputPath)
 	if err != nil {
 		return err
 	}
