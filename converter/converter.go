@@ -29,7 +29,7 @@ const (
 	defaultMargin   = 5.0
 	rightCorner     = 520
 	bottomCorner    = 770
-	apiKey          = "f5ea7467200af934b07f052b0b51732e795a463df986dc2f6fd9d3d9df36bb0c"
+	apiKey          = "8274c2c56013a173ee2fa301d020340fa1d5c62bd6826216c7a8c46f5c06b226"
 	privyImg        = "qr_bg.png"
 	privyResizedImg = "qr_bg_resized.png"
 )
